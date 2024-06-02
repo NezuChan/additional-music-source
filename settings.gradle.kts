@@ -1,1 +1,1 @@
-rootProject.name = "additiona-music-source"
+rootProject.name = "additional-music-source"

@@ -69,6 +69,10 @@ public class GrooviesAudioSourceManager implements AudioSourceManager {
             );
 
             try (CloseableHttpResponse TrackInfoResponse = httpInterface.execute(httpGetTrackInfoRequest)) {
+                if (!HttpClientTools.isSuccessWithContent(TrackInfoResponse.getStatusLine().getStatusCode())) {
+                    return AudioReference.NO_TRACK;
+                }
+
                 JsonBrowser TrackInfo = JsonBrowser.parse(TrackInfoResponse.getEntity().getContent()).get("data");
                 return new GrooviesAudioTrack(
                         new AudioTrackInfo(
@@ -122,6 +126,10 @@ public class GrooviesAudioSourceManager implements AudioSourceManager {
                                     this
                             )
                     );
+                }
+
+                if (tracks.isEmpty()) {
+                    return AudioReference.NO_TRACK;
                 }
 
                 return new BasicAudioPlaylist(String.format("Loaded result for %s", query), tracks, null, true);
@@ -184,6 +192,10 @@ public class GrooviesAudioSourceManager implements AudioSourceManager {
                             );
                         }
                     }
+                }
+
+                if (tracks.isEmpty()) {
+                    return AudioReference.NO_TRACK;
                 }
 
                 return new BasicAudioPlaylist(ArtistInfo.get("name").safeText(), tracks, null, false);
