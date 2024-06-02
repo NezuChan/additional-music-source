@@ -4,11 +4,11 @@ plugins {
     alias(libs.plugins.lavalink)
 }
 
-group = "org.example"
+group = "id.my.nezu"
 version = "0.1.0"
 
 lavalinkPlugin {
-    name = "plugin-template"
+    name = "additional-music-source"
     apiVersion = libs.versions.lavalink.api
     serverVersion = libs.versions.lavalink.server
 }
@@ -27,6 +27,7 @@ tasks {
 
 dependencies {
     // add your dependencies here
+    implementation("org.json:json:20220320")
 }
 
 publishing {
