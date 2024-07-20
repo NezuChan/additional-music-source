@@ -142,7 +142,7 @@ public class GrooviesAudioSourceManager implements AudioSourceManager {
     public AudioItem loadArtist(String id) {
         try (HttpInterface httpInterface = getHttpInterface()) {
             HttpUriRequest httpGetArtistInfoRequest = new HttpGet(
-                    String.format("https://api.groovies.my.id/artists/%s", id)
+                    String.format("https://api.groovies.my.id/artists/%s?with_tracks=true", id)
             );
 
             try (CloseableHttpResponse ArtistInfoResponse = httpInterface.execute(httpGetArtistInfoRequest)) {
@@ -170,7 +170,7 @@ public class GrooviesAudioSourceManager implements AudioSourceManager {
                 }
 
                 while (nextUrl != null) {
-                    HttpUriRequest httpGetNextTracksRequest = new HttpGet(nextUrl);
+                    HttpUriRequest httpGetNextTracksRequest = new HttpGet(String.format("%s&with_tracks=true", nextUrl));
                     try (CloseableHttpResponse NextArtistInfoResponse = httpInterface.execute(httpGetNextTracksRequest)) {
                         JsonBrowser NextArtistInfo = JsonBrowser.parse(NextArtistInfoResponse.getEntity().getContent()).get("data");
                         nextUrl = NextArtistInfo.get("next").text();
